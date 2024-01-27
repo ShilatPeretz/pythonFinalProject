@@ -1,5 +1,6 @@
 import socket
 import threading
+from scapysniff import sniff_packets
 
 SERVER_IP = "127.0.0.1"
 SERVER_PORT =6060
@@ -24,8 +25,10 @@ def client_session(client_object,username):
             print(f" {username} is disconnected")
             client_object.close()
             break
-        #only prints the given data
+        #the given data must be a command
         print(username+" :",data )
+        packets_to_send = sniff_packets(data)
+        #TODO: send the packets using pickle
         client_object.send("Ack".encode())
 
 
