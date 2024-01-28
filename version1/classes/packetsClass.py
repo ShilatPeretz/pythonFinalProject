@@ -1,11 +1,6 @@
-import json
-
-import scapy.all as scapy
-from scapy.layers.dns import DNS
 from scapy.layers.inet import *
 from scapy.layers.inet6 import IPv6
-from scapy.packet import Raw
-from Server.help import get_packet_show_output
+from version1.Server.help import get_packet_show_output
 
 
 class Packet:

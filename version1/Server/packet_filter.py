@@ -1,8 +1,5 @@
-import scapy.all as scapy
-from scapy.layers.dns import DNS
 from scapy.layers.inet import *
-from scapy.packet import Raw
-from classes.packetsClass import Packet
+from version1.classes.packetsClass import Packet
 from help import get_packet_show_output, site
 
 
