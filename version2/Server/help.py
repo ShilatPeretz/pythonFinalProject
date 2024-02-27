@@ -3,6 +3,10 @@ import io
 import sys
 
 site = "www.facebook.com"
+file = "ftp/hello.txt"
+ip = "facebook.com"
+file_path = "/version2/Server/ftp/hello.txt"
+
 
 def get_packet_show_output(packet):
     # Redirect standard output to capture the string representation

@@ -1,6 +1,7 @@
 import socket
 import threading
 from scapysniff import sniff_packets
+from version2.DataBase.DbHandler.usersTable import search_user
 
 SERVER_IP = "127.0.0.1"
 SERVER_PORT =6060
@@ -29,11 +30,10 @@ def client_session(client_object,username):
         print(username+" :",data )
         packets_to_send = sniff_packets(data)
         #TODO: send the packets using pickle
-        client_object.send("Ack".encode())
+
 
 
 # recive client and for each start a new thread to handle the client
-# TODO: add login check
 def main():
     server_socket = init_server()
     while True:
@@ -47,12 +47,15 @@ def main():
             client_object.send("user details not in the right format".encode())
             continue
         username, password = user_details[0],user_details[1]
-        ##TODO: check with data base
-        clients_usernames.append(username)
-        clients_objects.append(client_object)
-        client_object.send("Welcome to Server".encode())
-        client_th = threading.Thread(target=client_session, args=(client_object,username))
-        client_th.start()
+        # check with data base
+        if (search_user(username, password)):
+            clients_usernames.append(username)
+            clients_objects.append(client_object)
+            client_object.send("Welcome to Server".encode())
+            client_th = threading.Thread(target=client_session, args=(client_object, username))
+            client_th.start()
+        else:
+            client_object.send("client details are wrong. please try again!".encode())
 
 
 main()

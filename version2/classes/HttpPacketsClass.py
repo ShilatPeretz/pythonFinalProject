@@ -1,9 +1,9 @@
 from scapy.layers.inet import *
 from scapy.layers.inet6 import IPv6
-from version1.Server.help import get_packet_show_output
+from version2.Server.help import get_packet_show_output
 
 
-class Packet:
+class HttpPacket:
     protocol_names = {
         1: "ICMP",
         6: "TCP",
@@ -33,6 +33,7 @@ class Packet:
 
         if "DNS" in show_output:
             self.name = "DNS"
+            self.raw = show_output.split("###[DNS]###")[1]
         elif "GET/HTTP" in show_output:
             self.name = "get - HTTP"
         elif "HTTP" in show_output:
@@ -63,7 +64,7 @@ class Packet:
             self.src_port = packet[TCP].sport
             self.dst_port = packet[TCP].dport
 
-            flag = show_output.split("flags=")[1].split("\n")[0]
+            flag = show_output.split("TCP")[1].split("flags=")[1].split("\n")[0]
             self.flag = self.flags.get(flag)
 
         elif UDP in packet:
@@ -75,7 +76,7 @@ class Packet:
         self.payload = show_output
 
         ##print the data collected
-        #self.print_packet()
+        self.print_packet()
 
     def print_packet(self):
         print("\n\n")
@@ -94,22 +95,7 @@ class Packet:
             print("raw: "+str(self.raw))
 
 
-    # def set_dns_packet(self,packet):
-    #     #add the query/response
-    #     tmp = packet.show()
-    #
-    #     return 0
-    #
-    # def set_http_packet(self):
-    #     #add request method + requesr or answer
-    #     #collect the syn, ack, syn ack (three way handshake)
-    #     return 0
-    #
-    # def set_traceroute_packet(self):
-    #     return 0
 
-    #ARP? - in tracerote
-    #DHCP
 
 
 
