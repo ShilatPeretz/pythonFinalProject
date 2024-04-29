@@ -1,0 +1,24 @@
+
+/* Modify the spacing between the top element and the card container */
+.card-container {
+  width: 80%;
+  margin: 20px auto; /* Center the card container horizontally */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.protocol-info {
+  margin-top: 150px; /* Add margin-top to create space from the navigation bar */
+  margin-left: -75px;
+}
+
+.proto {
+  width: 75%;
+  margin: 0 auto; /* Center the card horizontally */
+}
+
+.card {
+  width: calc(20% - 20px);
+  margin-bottom: 20px;
+}

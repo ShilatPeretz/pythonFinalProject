@@ -21,9 +21,9 @@
 </head>
 <body>
     <div class="ui raised very padded center aligned text container segment">
-  <h1 class="ui header">Log in</h1>
+  <h1 class="ui header">Register</h1>
   <br>
-        <form>
+      <form>
   <div class="field">
    <div class="ui left icon input">
   <i class="book outline icon"></i>
@@ -37,17 +37,12 @@
   </div></div>
 <br>
 
-<!-- Conditionally render the error message -->
-            <% if error { %>
-            <p class="error">{{ error }}</p>
-            <% } %>
-
   <div class="actions">
-    <button class=" ui large teal button" type="submit">Log in</button>
+    <button class=" ui large teal button" type="submit">Register</button>
   </div>
-            </form>
+        </form>
   <br>
-  <p>Don't have an account? <a href="#"> Register </a>
+  <p>Already have an account? <a href="#"> Login </a>
 </div>
 </body>
 </html>
