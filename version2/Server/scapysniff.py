@@ -109,9 +109,10 @@ def sniff_packets(command):
     #if command not recognized
     else:
         return "error: command not recognized"
-    print(len(captured_packets))
-    # TODO: add server side using pickle
-    #return filtered_packets
-    return 1
+    print("len filtered:",len(filtered_packets))
+    print(type(filtered_packets))
+    for obj in filtered_packets:
+        print(type(obj))
+    return filtered_packets
 
 

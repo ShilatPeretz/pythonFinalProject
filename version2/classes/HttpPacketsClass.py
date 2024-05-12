@@ -76,7 +76,7 @@ class HttpPacket:
         self.payload = show_output
 
         ##print the data collected
-        self.print_packet()
+        # self.print_packet()
 
     def print_packet(self):
         print("\n\n")

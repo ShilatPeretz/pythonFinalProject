@@ -1,23 +1,11 @@
 import socket
+import time
 
-PORT = 6060
-SERVER = "127.0.0.1"
-END = True
-client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+from version2.Client.client import connect_to_server, client_socket_send_protocol
 
-client.connect((SERVER,PORT))
-
-def client_socket(send_data):
-    global END
-    client.send(send_data.encode())
-    if send_data.lower() == "bye":
-        client.close()
-        END = False
-    else:
-        data_receive = client.recv(1024).decode()
-        print(f"{data_receive}")
-
-client_socket(input("Input your Username :"))
-while END:
-    ## will request the wanted command
-    client_socket(input("Input your message :"))
+if connect_to_server('login', "username", "password"):
+    client_socket_send_protocol("http", "http")
+    print("First try completed")
+    time.sleep(5)  # Introduce a delay of 5 seconds
+    print("Second try")
+    client_socket_send_protocol("http", "HTTP")

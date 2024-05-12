@@ -6,7 +6,7 @@ nav ul {
   table-layout: fixed;
   width: 100%;
   text-align: center;
-  background: #333;
+  background: #00b5ac;
   margin: 0; /* Add this to remove default margin */
   position: fixed; /* Add this to make the navbar fixed */
   top: 0; /* Add this to stick the navbar to the top */
@@ -18,7 +18,7 @@ nav li {
   list-style: none;
   display: table-cell;
   vertical-align: middle;
-  background: #333;
+  background: #00b5ac;
 }
 
 nav li + li {

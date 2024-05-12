@@ -21,11 +21,16 @@ def init():
 
 # fins the user by usename & password
 def search_user(username, password):
-    user = f"SELECT * FROM users WHERE username =  '{username}' AND password = '{password}'"
-    if user == None:
+    # Execute the query with parameters to prevent SQL injection
+    c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
+
+    # Fetch one row to check if the user exists
+    user = c.fetchone()
+
+    # Check if user exists
+    if user is None:
         return False
     return True
-
 
 # adds a newly uploaded file to files table
 def add_new_user(username, password):

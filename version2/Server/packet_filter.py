@@ -84,6 +84,6 @@ def ftp_packet_filter(captured_packets):
     filtered_packets = []
     for packet in captured_packets:
         filtered_packets.append(FtpPacket(packet))
-    print("filtered packet len: ")
-    print(len(filtered_packets))
-    return
+    # print("filtered packet len: ")
+    # print(len(filtered_packets))
+    return filtered_packets

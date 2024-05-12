@@ -66,7 +66,7 @@ class TracertPacket:
         self.payload = show_output
 
         ##print the data collected
-        self.print_packet()
+        # self.print_packet()
 
     # print the packet **only for developer**
     def print_packet(self):
