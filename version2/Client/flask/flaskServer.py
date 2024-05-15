@@ -1,6 +1,8 @@
-from flask import Flask, request, Blueprint, render_template
-from version2.Client.client import connect_to_server, client_socket_send_protocol, disconnect_client
-from version2.Client.HashMD5 import get_hash
+from flask import Flask, request, Blueprint, render_template, jsonify
+from ..client import connect_to_server, client_socket_send_protocol, disconnect_client
+from ..HashMD5 import get_hash
+import ipapi
+
 
 # change when working on another computer!
 CLIENT_IP = '192.168.56.1'
@@ -94,6 +96,20 @@ def tracert():
 def disconnect():
     disconnect_client()
     return render_template('login.html', error = "none")
+
+#######################################
+@app.route('/locate_ip', methods=['GET'])
+def locate_ip():
+    # Get the IP address from the request
+    ip_address = request.args.get('ip')
+
+    # Call the function to locate the IP address
+    geolocation_data = ipapi.location(ip_address)
+
+    print(geolocation_data)
+    # Return the geolocation data as JSON response
+    return jsonify(geolocation_data)
+#####################################
 
 
 

@@ -8,6 +8,10 @@ from scapy.layers.inet import ICMP, TCP
 from scapy.sendrecv import AsyncSniffer
 from ftpCommand import execute_ftp_command
 
+from classes.HttpPacketsClass import HttpPacket
+from classes.TracertPacketClass import TracertPacket
+from classes.FtpPacketsClass import FtpPacket
+
 
 #the captured packets will be saved here
 captured_packets = []
@@ -49,6 +53,16 @@ def http_command(site):
         # Execute your command (replace with your actual command)
         command_to_execute = f"curl http://{site}"
         subprocess.Popen(command_to_execute, shell=True).wait()
+
+
+def create_http_packets(packets, site):
+    http_packet_arr = []
+    for p in packets:
+        tmp = HttpPacket(p)
+        if "DNS" in tmp.payload and site not in tmp.payload:
+            continue
+        http_packet_arr.append(tmp)
+    return http_packet_arr
 #******************************************** tracert ******************************************************#
 #while executing the tracert command the computer will use the ICMPv4
 icmp_types = {
@@ -88,6 +102,14 @@ def tracert_command(ip):
         # Execute your command (replace with your actual command)
         command_to_execute = f"tracert {ip}"
         subprocess.Popen(command_to_execute, shell=True).wait()
+
+
+def create_tracert_packets(packets):
+    tracert_packet_arr = []
+    for p in packets:
+        tracert_packet_arr.append(TracertPacket(p))
+    return tracert_packet_arr
+
 #******************************************* ftp *******************************************************#
 # check if dst or src port is 21 (ftp port)
 def ftp_filter(packet):
@@ -110,7 +132,11 @@ def ftp_command():
         # Execute the command (run client server)
         execute_ftp_command()
 
-
+def create_ftp_packets(packets):
+    ftp_packet_arr = []
+    for p in packets:
+        ftp_packet_arr.append(FtpPacket(p))
+    return ftp_packet_arr
 
 
 #******************************************** general ******************************************************#
@@ -118,17 +144,21 @@ def ftp_command():
 # Scapy sniffs from all the netwrk interface/
 # But we can ask Scapy to sniff only on a specific interface
 def sniff_packets(command):
+    filtered_packets = []
     print("data: ",command)
     protocol, protocol_info = command.split(":")
     if protocol == "http":
         http_command(protocol_info)
+        filtered_packets = create_http_packets(captured_packets, protocol_info)
     elif protocol == "tracert":
         tracert_command(protocol_info)
+        filtered_packets = create_tracert_packets(captured_packets)
     elif protocol == "ftp":
         ftp_command()
+        filtered_packets = create_ftp_packets(captured_packets)
     #if command not recognized
     else:
         return "error: command not recognized"
-    return captured_packets
+    return filtered_packets
 
 

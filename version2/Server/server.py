@@ -4,8 +4,9 @@ import socket
 import pickle
 import threading
 from scapysniff import sniff_packets
-from version2.Server.DataBase.DbHandler.usersTable import search_user, add_new_user
-from version2.Server.ftpCommand import init_ftp_server
+from DataBase.DbHandler.usersTable import search_user, add_new_user
+from ftpCommand import init_ftp_server
+from DataBase.DbHandler.usersTable import init
 
 # server details
 PORT = 12345
@@ -17,6 +18,7 @@ clients_objects = []
 
 # Start the server
 def init_server():
+    init()
     init_ftp_server()
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((SERVER, PORT))

@@ -59,7 +59,6 @@ def client_socket_send_protocol(protocol_info):
         for packet in tmp:
             try:
                 obj = pickle.loads(packet)
-                obj.print_packet()
                 received_objects.append(obj)
             except pickle.UnpicklingError as unpickle_err:
                 print("Error: Failed to unpickle the received data:", unpickle_err)

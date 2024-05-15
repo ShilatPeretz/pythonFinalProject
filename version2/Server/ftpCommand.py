@@ -1,7 +1,7 @@
 import threading
 import time
-from version2.Server.ftp.ftpServerScript import server_main
-from version2.Server.ftp.ftpClientScript import client_main
+from ftp.ftpServerScript import server_main
+from ftp.ftpClientScript import client_main
 
 global server_running, server_thread
 def init_ftp_server():
