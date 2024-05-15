@@ -36,10 +36,11 @@ def http_filter(packet):
     if TCP in packet and (packet[TCP].sport == 80 or packet[TCP].dport == 80):
         return True
     return False
-# execute the http command with the given site
+
 # Define a lock
 http_lock = threading.Lock()
 
+# execute the http command with the given site
 def http_command(site):
     # Acquire the lock before executing the function
     with http_lock:
@@ -54,7 +55,7 @@ def http_command(site):
         command_to_execute = f"curl http://{site}"
         subprocess.Popen(command_to_execute, shell=True).wait()
 
-
+# create class http packets
 def create_http_packets(packets, site):
     http_packet_arr = []
     for p in packets:
@@ -89,9 +90,10 @@ def tracert_filter(packet):
     return False
 
 
-# execute the tracert command
+# define a lock
 tracert_lock = threading.Lock()
 
+# execute the tracert command
 def tracert_command(ip):
     # Acquire the lock before executing the function
     with tracert_lock:
@@ -103,7 +105,7 @@ def tracert_command(ip):
         command_to_execute = f"tracert {ip}"
         subprocess.Popen(command_to_execute, shell=True).wait()
 
-
+# create class tracert packets
 def create_tracert_packets(packets):
     tracert_packet_arr = []
     for p in packets:
@@ -117,10 +119,11 @@ def ftp_filter(packet):
         return True
     return False
 
-# execute the tracert command
+
 # Define a lock
 ftp_lock = threading.Lock()
 
+# execute the tracert command
 def ftp_command():
     # Acquire the lock before executing the function
     with ftp_lock:
@@ -132,6 +135,7 @@ def ftp_command():
         # Execute the command (run client server)
         execute_ftp_command()
 
+# create class ftp packets
 def create_ftp_packets(packets):
     ftp_packet_arr = []
     for p in packets:

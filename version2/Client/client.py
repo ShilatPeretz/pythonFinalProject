@@ -22,6 +22,7 @@ def connect_to_server(type_enter, user, password):
         client.close()  # Close the socket in case of an error
         return False, None
 
+# send simple message - first message - connecting the client to the server
 def client_socket_send_message(send_data):
     global client
     try:
@@ -35,6 +36,7 @@ def client_socket_send_message(send_data):
         print("Error in client socket:", e)
         return ""
 
+# send the command to execute
 def client_socket_send_protocol(protocol_info):
     global client
     try:

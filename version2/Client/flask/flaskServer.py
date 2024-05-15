@@ -1,6 +1,6 @@
 from flask import Flask, request, Blueprint, render_template, jsonify
-from ..client import connect_to_server, client_socket_send_protocol, disconnect_client
-from ..HashMD5 import get_hash
+from version2.Client.client import connect_to_server, client_socket_send_protocol, disconnect_client
+from version2.Client.HashMD5 import get_hash
 import ipapi
 
 
@@ -98,6 +98,7 @@ def disconnect():
     return render_template('login.html', error = "none")
 
 #######################################
+# locate the ip details using ipapi
 @app.route('/locate_ip', methods=['GET'])
 def locate_ip():
     # Get the IP address from the request
