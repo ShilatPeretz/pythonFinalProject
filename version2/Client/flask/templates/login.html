@@ -39,16 +39,16 @@
   </div>
   <br>
   <!-- Conditionally render the error message -->
-  <% if error { %>
-  <p class="error">{{ error }}</p>
-  <% } %>
+  {% if error!="none" %}
+  <p class="error" style="color: red;">{{ error }}</p>
+  {% endif %}
   <div class="actions">
     <button class="ui large teal button" type="submit">Log in</button>
   </div>
 </form>
 
   <br>
-  <p>Don't have an account? <a href="#"> Register </a>
+  <p>Don't have an account? <a href="/register"> Register </a>
 </div>
 </body>
 </html>

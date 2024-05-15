@@ -1,10 +1,11 @@
 ## this file will collect all packets and extract the wanted data
 ## **connect to server
 import subprocess
+import threading
+
+from scapy.layers.dns import DNS
 from scapy.layers.inet import ICMP, TCP
 from scapy.sendrecv import AsyncSniffer
-from packet_filter import http_packet_filter, tracert_packet_filter, ftp_packet_filter
-from help import site, ip
 from ftpCommand import execute_ftp_command
 
 
@@ -22,19 +23,32 @@ def capture_packets(packet):
 
 
 #***************************************** http *********************************************************#
+
+# filter for http packets
+# search DNS packets or port=80
+def http_filter(packet):
+    if DNS in packet:
+        return True
+    if TCP in packet and (packet[TCP].sport == 80 or packet[TCP].dport == 80):
+        return True
+    return False
 # execute the http command with the given site
-def http_command():
-    # clear cash command (must run as administrator)
-    subprocess.Popen("ipconfig /flushdns", shell=True)
+# Define a lock
+http_lock = threading.Lock()
 
-    deletePackets()
-    sniff_thread = AsyncSniffer(prn=capture_packets, count=25)
-    sniff_thread.start()
+def http_command(site):
+    # Acquire the lock before executing the function
+    with http_lock:
+        # clear cache command (must run as administrator)
+        subprocess.Popen("ipconfig /flushdns", shell=True)
 
-    # Execute your command (replace with your actual command)
-    command_to_execute = f"curl http://{site}"
-    subprocess.Popen(command_to_execute, shell=True).wait()
+        deletePackets()
+        sniff_thread = AsyncSniffer(prn=capture_packets, count=25, lfilter=http_filter)
+        sniff_thread.start()
 
+        # Execute your command (replace with your actual command)
+        command_to_execute = f"curl http://{site}"
+        subprocess.Popen(command_to_execute, shell=True).wait()
 #******************************************** tracert ******************************************************#
 #while executing the tracert command the computer will use the ICMPv4
 icmp_types = {
@@ -62,16 +76,18 @@ def tracert_filter(packet):
 
 
 # execute the tracert command
-def tracert_command():
-    deletePackets()
-    sniff_thread = AsyncSniffer(prn=capture_packets, count=6, lfilter=tracert_filter)
-    sniff_thread.start()
+tracert_lock = threading.Lock()
 
-    # Execute your command (replace with your actual command)
-    command_to_execute = f"tracert {ip}"
-    subprocess.Popen(command_to_execute, shell=True).wait()
+def tracert_command(ip):
+    # Acquire the lock before executing the function
+    with tracert_lock:
+        deletePackets()
+        sniff_thread = AsyncSniffer(prn=capture_packets, count=250, lfilter=tracert_filter)
+        sniff_thread.start()
 
-
+        # Execute your command (replace with your actual command)
+        command_to_execute = f"tracert {ip}"
+        subprocess.Popen(command_to_execute, shell=True).wait()
 #******************************************* ftp *******************************************************#
 # check if dst or src port is 21 (ftp port)
 def ftp_filter(packet):
@@ -80,14 +96,19 @@ def ftp_filter(packet):
     return False
 
 # execute the tracert command
-def ftp_command():
-    deletePackets()
-    interface = "Software Loopback Interface 1"
-    sniff_thread = AsyncSniffer(prn=capture_packets, count=6, lfilter=ftp_filter, iface=interface)
-    sniff_thread.start()
+# Define a lock
+ftp_lock = threading.Lock()
 
-    # Execute the command (run client server)
-    execute_ftp_command()
+def ftp_command():
+    # Acquire the lock before executing the function
+    with ftp_lock:
+        deletePackets()
+        interface = "Software Loopback Interface 1"
+        sniff_thread = AsyncSniffer(prn=capture_packets, count=100, lfilter=ftp_filter, iface=interface)
+        sniff_thread.start()
+
+        # Execute the command (run client server)
+        execute_ftp_command()
 
 
 
@@ -97,22 +118,17 @@ def ftp_command():
 # Scapy sniffs from all the netwrk interface/
 # But we can ask Scapy to sniff only on a specific interface
 def sniff_packets(command):
-    if command == "http":
-        http_command()
-        filtered_packets = http_packet_filter(captured_packets)
-    elif command == "tracert":
-        tracert_command()
-        filtered_packets = tracert_packet_filter(captured_packets)
-    elif command == "ftp":
+    print("data: ",command)
+    protocol, protocol_info = command.split(":")
+    if protocol == "http":
+        http_command(protocol_info)
+    elif protocol == "tracert":
+        tracert_command(protocol_info)
+    elif protocol == "ftp":
         ftp_command()
-        filtered_packets = ftp_packet_filter(captured_packets)
     #if command not recognized
     else:
         return "error: command not recognized"
-    print("len filtered:",len(filtered_packets))
-    print(type(filtered_packets))
-    for obj in filtered_packets:
-        print(type(obj))
-    return filtered_packets
+    return captured_packets
 
 

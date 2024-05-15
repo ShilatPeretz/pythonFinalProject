@@ -1,9 +1,8 @@
-from version2.Additional.data import PORT, SERVER, MSG_LENGTH
 import socket
 import pickle
-from version2.classes.HttpPacketsClass import HttpPacket
-from version2.classes.TracertPacketClass import TracertPacket
-from version2.classes.FtpPacketsClass import FtpPacket
+
+PORT = 12345
+SERVER = "127.0.0.1"
 
 global client
 def connect_to_server(type_enter, user, password):
@@ -15,9 +14,9 @@ def connect_to_server(type_enter, user, password):
         print("Sending message:", message)
         response = client_socket_send_message(message)
         print("Server response:", response)
-        if response == "error: client details are wrong":
-            return False, client
-        return True, client
+        if response == "Error: Client details are wrong":
+            return False
+        return True
     except Exception as e:
         print("Error connecting to server:", e)
         client.close()  # Close the socket in case of an error
@@ -30,17 +29,17 @@ def client_socket_send_message(send_data):
         if send_data.lower() == "bye":
             return ""  # Return an empty string if sending "bye"
         else:
-            data_received = client.recv(MSG_LENGTH).decode()
+            data_received = client.recv(1024).decode()
             return data_received
     except Exception as e:
         print("Error in client socket:", e)
         return ""
 
-def client_socket_send_protocol(protocol, protocol_info):
+def client_socket_send_protocol(protocol_info):
     global client
     try:
         # Send protocol information to the server
-        client.send(protocol.encode())
+        client.send(protocol_info.encode())
 
         received_objects = []
         tmp = []
@@ -77,20 +76,3 @@ def disconnect_client():
     client.close()
 ####################################
 
-
-
-def main():
-    connected, client = connect_to_server('login', "username", "password")
-    if connected:
-        try:
-            while True:
-                protocol = input("Enter protocol to send: ")
-                if protocol.lower() == "bye":
-                    client.send("bye".encode())
-                    break
-                client_socket_send_protocol(protocol, "some info")  # Send protocol to server
-        finally:
-            client.close()
-
-if __name__ == "__main__":
-    main()

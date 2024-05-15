@@ -18,7 +18,7 @@
         }
 
         .login-container {
-            margin-top: 530px !important;
+            margin-top:700px !important;
             display: flex;
             flex-direction: column; /* Align forms in a column */
             align-items: center; /* Center forms horizontally */
@@ -75,8 +75,75 @@
             background-color: #0056b3;
         }
     </style>
+    <style>
+        /* navbar.css */
+
+/* table layout if there are less than 6 items */
+nav ul {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  text-align: center;
+  background: #00b5ac;
+  margin: 0; /* Add this to remove default margin */
+  position: fixed; /* Add this to make the navbar fixed */
+  top: 0; /* Add this to stick the navbar to the top */
+  left: 0; /* Add this to align the navbar to the left */
+  z-index: 999; /* Add this to ensure the navbar appears above other content */
+}
+
+nav li {
+  list-style: none;
+  display: table-cell;
+  vertical-align: middle;
+  background: #00b5ac;
+}
+
+nav li + li {
+  border-left: 2px solid #000;
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  padding: 0.75em 1em;
+  font-size: 1.25em;
+}
+
+/* Remove the underline on hover */
+nav a:hover, nav a:focus {
+  text-decoration: none;
+}
+
+/* inline-block (wrapping) layout if there are 6 or more items */
+
+nav li:nth-last-child(n+6),
+nav li:nth-last-child(n+6) ~ * {
+  display: inline-block;
+  border: 0;
+}
+
+nav li:nth-last-child(n+6) a,
+nav li:nth-last-child(n+6) ~ * a {
+  display: inline-block;
+  border: 0;
+}
+
+/* boring stuff */
+
+body {
+  font-size: 20px;
+  font-family: sans-serif;
+  margin: 0; /* Add this to remove default margin */
+}
+
+nav {
+  margin-top: 3em;
+}
+
+    </style>
     <meta charset="UTF-8">
-  <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css" integrity="sha256-wT6CFc7EKRuf7uyVfi+MQNHUzojuHN2pSw0YWFt2K5E=" crossorigin="anonymous" />
     <title>Login page</title>
 </head>
@@ -84,25 +151,21 @@
 <!-- ****************** Nav Bar ************************************ -->
 <nav role="navigation">
   <ul>
-    <li><a href="#">home</a></li>
-    <li><a href="#">about</a></li>
-    <li><a href="#">blog</a></li>
-    <li><a href="#">FAQs</a></li>
-    <li><a href="#">a link with a lot of text</a></li>
-    <li><a href="#">shop</a></li>
-    <li><a href="#">endorsements</a></li>
+    <li><a href="/main">home</a></li>
+    <li><a href="/disconnect">log out</a></li>
     <!-- add or remove items -->
   </ul>
 </nav>
 
 <!-- *************************************************************************************************** -->
+<br><br><br>
     <div class="login-container">
     <form action="/ftp" method="post">
         <div class="login-box">
             <h2>FTP protocol</h2>
             <div class="text-content">
                 <!-- Developer placeholder for plain text content -->
-                FTP (File Transfer Protocol) is a standard network protocol used for the transfer of files from one host to another over a TCP-based network, such as the Internet. FTP works by opening two connections that link the computers trying to communicate with each other.
+                FTP (File Transfer Protocol) is a standard network protocol used for the transfer of files from one host to another over a TCP-based network, such as the Internet. FTP works by opening two connections that link the computers trying to communicate with each other. Used port 21.
             </div>
             <button class="ui large teal button" type="submit" name="ftp_submit">FTP command</button>
         </div>

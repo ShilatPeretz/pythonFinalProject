@@ -2,9 +2,7 @@
 import io
 import sys
 
-site = "www.facebook.com"
 file = "ftp/hello.txt"
-ip = "facebook.com"
 file_path = "/version2/Server/ftp/hello.txt"
 
 

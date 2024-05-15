@@ -23,7 +23,11 @@ class TracertPacket:
     def __init__(self, packet):
         global show_output
         show_output = get_packet_show_output(packet)
-        show_output = show_output.replace(" ","")
+
+        # packet data
+        self.payload = show_output
+
+        show_output = show_output.replace(" ", "")
 
         #self.protocol = packet.proto if hasattr(packet,'proto') else None
         if Ether in packet:
@@ -60,13 +64,10 @@ class TracertPacket:
             self.type = self.icmp_types.get(11)
         elif (p_type == 8):
             self.type = self.icmp_types.get(8)
+        else:
+            self.type=""
 
 
-        #packet data
-        self.payload = show_output
-
-        ##print the data collected
-        # self.print_packet()
 
     # print the packet **only for developer**
     def print_packet(self):
