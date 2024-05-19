@@ -1,6 +1,10 @@
 import socket
 import pickle
 
+from version2.classes.HttpPacketsClass import HttpPacket
+from version2.classes.TracertPacketClass import TracertPacket
+from version2.classes.FtpPacketsClass import FtpPacket
+
 PORT = 12345
 SERVER = "127.0.0.1"
 
@@ -76,4 +80,3 @@ def disconnect_client():
     client.send("bye".encode())
     client.close()
 ####################################
-

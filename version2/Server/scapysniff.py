@@ -8,9 +8,9 @@ from scapy.layers.inet import ICMP, TCP
 from scapy.sendrecv import AsyncSniffer
 from ftpCommand import execute_ftp_command
 
-from classes.HttpPacketsClass import HttpPacket
-from classes.TracertPacketClass import TracertPacket
-from classes.FtpPacketsClass import FtpPacket
+from version2.classes.HttpPacketsClass import HttpPacket
+from version2.classes.TracertPacketClass import TracertPacket
+from version2.classes.FtpPacketsClass import FtpPacket
 
 
 #the captured packets will be saved here
@@ -164,5 +164,4 @@ def sniff_packets(command):
     else:
         return "error: command not recognized"
     return filtered_packets
-
 
